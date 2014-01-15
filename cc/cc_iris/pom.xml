@@ -1,0 +1,35 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.iris</groupId>
+    <artifactId>cc</artifactId>
+    <version>0.1</version>
+  </parent>
+  <artifactId>cc_iris</artifactId>
+  <packaging>pom</packaging>
+  <name>基础项目-core|web</name>
+  <dependencies>
+  		<dependency>
+			<groupId>com.iris</groupId>
+			<artifactId>cc_core</artifactId>
+			<version>0.1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.iris</groupId>
+			<artifactId>cc_web</artifactId>
+			<version>0.1</version>
+		</dependency>
+  </dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.mortbay.jetty</groupId>
+				<artifactId>jetty-maven-plugin</artifactId>
+				<version>8.1.8.v20121106</version>
+				<configuration>
+					 <stopPort>80</stopPort>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

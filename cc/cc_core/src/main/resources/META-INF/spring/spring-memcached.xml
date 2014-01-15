@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:cache="http://www.springframework.org/schema/cache"  
+	xsi:schemaLocation="http://www.springframework.org/schema/beans   
+           http://www.springframework.org/schema/beans/spring-beans-2.0.xsd  
+           http://www.springframework.org/schema/aop   
+           http://www.springframework.org/schema/aop/spring-aop-2.0.xsd  
+           http://www.springframework.org/schema/tx   
+           http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
+           http://www.springframework.org/schema/cache 
+           http://www.springframework.org/schema/cache/spring-cache-3.1.xsd"
+	default-autowire="byName" default-lazy-init="true">
+	<!-- 启用spring cache ，并指定 cache key的生成规则处理器 stringKeyGenerator-->
+	<cache:annotation-driven cache-manager="cacheManager" key-generator="stringKeyGenerator"/>
+	<!-- 生成自定义规则的key -->
+	<bean id="stringKeyGenerator" class="com.smarcloud.core.cache.MemcacheKeyGenerator"></bean>
+    <!-- 设置memcached客户端 -->
+    <bean name="memcachedClientBuilder" class="net.rubyeye.xmemcached.XMemcachedClientBuilder">
+    	<constructor-arg>
+                        <list>
+                                <bean class="java.net.InetSocketAddress">
+                                        <constructor-arg>
+                                        	<value>${memcache.server}</value>
+                                        </constructor-arg>
+                                        <constructor-arg>
+                                             <value>${memcache.port}</value>
+                                        </constructor-arg>
+                                </bean>
+                        </list>
+                </constructor-arg>
+                <constructor-arg>
+                        <list>
+                      		<value>1</value>
+                        </list>
+                </constructor-arg>
+                <property name="connectionPoolSize" value="${memcache.poolsize}"></property>
+                <property name="commandFactory">  
+	            	<bean class="net.rubyeye.xmemcached.command.TextCommandFactory" />  
+		        </property>  
+		        <property name="sessionLocator">  
+		            <bean class="net.rubyeye.xmemcached.impl.KetamaMemcachedSessionLocator" />  
+		        </property>  
+		        <property name="transcoder">  
+		            <bean class="net.rubyeye.xmemcached.transcoders.SerializingTranscoder" />  
+		        </property>  
+        </bean>
+     <bean name="memcachedClient" factory-bean="memcachedClientBuilder" factory-method="build" destroy-method="shutdown"/>
+    <!-- cache信息设置 -->
+    <bean id="simpleCacheManager" class="org.springframework.cache.support.SimpleCacheManager">
+		<property name="caches">
+			<set>
+ 					<bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean" name="default" /> 
+			</set>
+		</property>
+	</bean>
+	 <bean id="cacheManager"  class="org.springframework.cache.support.CompositeCacheManager">
+     <property name="cacheManagers"> 
+       <list> 
+         <ref bean="simpleCacheManager" /> 
+       </list> 
+     </property> 
+     <property name="fallbackToNoOpCache" value="true" /> 
+   </bean> 
+</beans>  
