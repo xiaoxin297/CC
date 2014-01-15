@@ -14,8 +14,7 @@ public class Base {
 	try {
 	    try {
 		return clazz.getMethod("get"+key.substring(0,1).toUpperCase() + key.substring(1), null).invoke(this, null);
-	    } catch (IllegalAccessException | IllegalArgumentException
-		    | InvocationTargetException e) {
+	    } catch (IllegalAccessException | IllegalArgumentException  | InvocationTargetException e) {
 		e.printStackTrace();
 	    }
 	} catch (NoSuchMethodException | SecurityException e) {

@@ -13,7 +13,7 @@ public class Test {
 	
 	// Contorller 使用
 	Base base = a1;
-	String name  = (String)base.get("name");
+	String name  = (String)a1.get("name");
 	System.out.println(name);
 	
 	// Base --> PO
