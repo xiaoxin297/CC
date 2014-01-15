@@ -65,11 +65,9 @@
 		<property name="suffix" value=".jsp" />
 	</bean>
 	<!-- Upload Resolver  -->
-	<bean id="multipartResolver"
-		class="org.springframework.web.multipart.commons.CommonsMultipartResolver"
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"
 		p:defaultEncoding="utf-8">
-		<!-- one of the properties available; the maximum file size in bytes 
-		<property name="maxUploadSize" value="10485760" />-->
+		<property name="maxUploadSize" value="10485760" />
 	</bean> 
 	<!--  MessageConverters  -->
     <bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping"/>		
